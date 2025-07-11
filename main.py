@@ -1,8 +1,10 @@
-from weather import get_weather
-from genai_weatherman import generate_weather_commentary
+from scheulder import WeatherScheduler
+from daily_email import scheduled_weather_email
 
-weather_data = get_weather("Detroit") # this will later be passed in by the user but have this as a default value
-persona = "goofy"  # this will later be passed in by the user but have this as a default value
-forecast = generate_weather_commentary(weather_data, persona)
+def main():
+    ws = WeatherScheduler()
+    ws.add_daily_email_job(scheduled_weather_email)
+    ws.start()
 
-print(forecast)
+if __name__ == "__main__":
+    main()
