@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from logger import log_event
 
 load_dotenv()
 
@@ -28,6 +29,8 @@ def generate_weather_commentary(weather_data: dict, persona: str = "cheerful wea
             model="gemini-1.5-flash",
             contents=prompt
         )
+        log_event("genai", "success", "Generated forecast with Gemini")
         return response.text
     except Exception as e:
-        return f"[Error generating weather commentary] {e}"
+        log_event("genai", "error", str(e))
+        return "[Error generating weather commentary]"

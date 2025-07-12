@@ -6,7 +6,7 @@ def scheduled_weather_email():
     weather = get_weather()
     forecast = generate_weather_commentary(weather)
     send_email(
-        subject="Your daily weather forecast right to your email",
+        subject="Here's the weather forecast for today",
         body=forecast,
         to="diego.sebas2915@gmail.com",
     )

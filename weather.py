@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+from logger import log_event
 
 load_dotenv()
 
@@ -17,7 +18,8 @@ def get_weather(city: str = "Detroit") -> dict:
     try:
         response = requests.get(BASE_URL, params=params)
         response.raise_for_status()
+        log_event("weather", "success", f"Weather data retrieved for {city}")
         return response.json()
     except requests.exceptions.HTTPError as errh:
-        print(f"[weather.py] Weather API call failed: {errh}")
+        log_event("weather", "error", str(errh))
         return {}
