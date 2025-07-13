@@ -5,11 +5,11 @@ class WeatherScheduler:
     def __init__(self):
         self.scheduler = BlockingScheduler()
 
-    def add_email_job(self, job_func, frequency="Daily", day_of_week="Monday", hour=1, minute=1):
-        if frequency == "Daily":
+    def add_email_job(self, job_func, frequency="daily", day_of_week="monday", hour=1, minute=1):
+        if frequency == "daily":
             trigger = "cron"
             self.scheduler.add_job(job_func, trigger=trigger, hour=hour, minute=minute)
-        elif frequency == "Weekly":
+        elif frequency == "weekly":
             self.scheduler.add_job(job_func, trigger="cron", day_of_week=day_of_week, hour=hour, minute=minute)
 
     def start(self):

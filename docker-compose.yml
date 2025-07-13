@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  weatherbot:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a scheduler service that runs separately
+  weatherbot-scheduler:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: python main.py
+    restart: unless-stopped
+    depends_on:
+      - weatherbot
+    profiles:
+      - scheduler

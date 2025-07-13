@@ -21,8 +21,8 @@ def main():
     ws = WeatherScheduler()
     ws.add_email_job(
         scheduled_weather_email(city, personality, email_address),
-        day_of_week,
         frequency,
+        day_of_week,
         hour,
         minute
     )
