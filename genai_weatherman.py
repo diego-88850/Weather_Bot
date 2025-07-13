@@ -3,14 +3,12 @@ from http.client import responses
 
 import requests
 from dotenv import load_dotenv
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 from logger import log_event
 
 load_dotenv()
 
-client = genai.Client()
-client.api_key = os.getenv("GENAI_API_KEY")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 def generate_weather_commentary(weather_data: dict, persona: str = "cheerful weatherman") -> str:
     city = weather_data["location"]["name"]
@@ -25,10 +23,8 @@ def generate_weather_commentary(weather_data: dict, persona: str = "cheerful wea
     )
 
     try:
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=prompt
-        )
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
         log_event("genai", "success", "Generated forecast with Gemini")
         return response.text
     except Exception as e:
